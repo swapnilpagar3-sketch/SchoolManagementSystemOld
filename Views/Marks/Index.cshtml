@@ -1,0 +1,326 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@model IPagedList<EntityFrameworkCore.Models.StudentExamMarks>
+
+@{
+    ViewData["Title"] = "Student Marks List";
+    bool isLoading = ViewData["IsLoading"] as bool? ?? false;
+}
+
+<div class="card shadow border-0">
+
+    <div class="card-header bg-success text-white">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h3 class="mb-0">
+                <i class="bi bi-award-fill me-2"></i>
+                Exam Result Management
+            </h3>
+
+            <span class="badge bg-light text-dark fs-6">
+                Total Records: @Model.TotalItemCount
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Index" method="get">
+
+            <div class="row mb-3 align-items-end">
+
+                <div class="col-md-2">
+
+                    <label class="form-label fw-bold">
+                        Student Name
+                    </label>
+
+                    <input type="text"
+                           name="studentName"
+                           value="@ViewBag.StudentName"
+                           class="form-control"
+                           placeholder="Enter Student Name" />
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label fw-bold">
+                        Exam Name
+                    </label>
+
+                    <select name="examId" class="form-select">
+
+                        <option value="">
+                            All Exams
+                        </option>
+
+                        @if (ViewBag.Exams != null)
+                        {
+                            foreach (var exam in ViewBag.Exams)
+                            {
+                                if (ViewBag.ExamId != null && ViewBag.ExamId.ToString() == exam.Value)
+                                {
+                                    <option value="@exam.Value" selected>
+                                        @exam.Text
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@exam.Value">
+                                        @exam.Text
+                                    </option>
+                                }
+                            }
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label fw-bold">
+                        Result
+                    </label>
+
+                    <select name="result" class="form-select">
+
+                        <option value="">All</option>
+
+                        @if (ViewBag.Result == "Pass")
+                        {
+                            <option value="Pass" selected>Pass</option>
+                        }
+                        else
+                        {
+                            <option value="Pass">Pass</option>
+                        }
+
+                        @if (ViewBag.Result == "Fail")
+                        {
+                            <option value="Fail" selected>Fail</option>
+                        }
+                        else
+                        {
+                            <option value="Fail">Fail</option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="d-flex gap-2">
+
+                        <a asp-action="Create" class="btn btn-success">
+                            <i class="bi bi-plus-circle-fill me-1"></i> Add Marks
+                        </a>
+
+                        <a asp-action="ExportToExcel"
+                           asp-route-studentName="@ViewBag.StudentName"
+                           asp-route-examId="@ViewBag.ExamId"
+                           asp-route-result="@ViewBag.Result"
+                           class="btn btn-info text-white"
+                           style="margin-left: 18px;">
+                            <i class="bi bi-file-earmark-excel-fill me-1"></i> Export
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-bordered align-middle">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th class="text-center">Id</th>
+
+                        <th>Student Name</th>
+
+                        <th>Exam Name</th>
+
+                        <th class="text-center">Exam Date</th>
+
+                        <th class="text-center">Total Marks</th>
+
+                        <th class="text-center">Passing Marks</th>
+
+                        <th class="text-center">Obtained Marks</th>
+
+                        <th class="text-center">Result</th>
+
+                        <th class="text-center" width="220">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @if (isLoading)
+                    {
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center text-muted py-3">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                    Loading Exam Results...
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td class="text-center fw-bold">
+                                    @item.Id
+                                </td>
+
+                                <td>
+                                    @item.Student?.StudentName
+                                </td>
+
+                                <td>
+                                    @item.Exam?.ExamName
+                                </td>
+
+                                <td class="text-center">
+                                    @(item.Exam?.ExamDate.ToString("dd-MM-yyyy"))
+                                </td>
+
+                                <td class="text-center">
+                                    @item.Exam?.TotalMarks
+                                </td>
+
+                                <td class="text-center">
+                                    @item.Exam?.PassingMarks
+                                </td>
+
+                                <td class="text-center fw-bold">
+                                    @item.ObtainedMarks
+                                </td>
+
+                                <td class="text-center">
+
+                                    @if (item.Exam != null && item.ObtainedMarks >= item.Exam.PassingMarks)
+                                    {
+                                        <span class="badge bg-success">Pass</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Fail</span>
+                                    }
+
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="9" class="text-center text-danger fw-bold py-4">
+                                <i class="bi bi-exclamation-circle me-1"></i> No Exam Results Records Found
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="card-footer bg-light">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-4">
+
+                <span class="badge bg-secondary">
+                    Total Pages: @Model.PageCount
+                </span>
+
+            </div>
+
+            <div class="col-md-4 text-center">
+
+                @Html.PagedListPager(
+                Model,
+                page => Url.Action("Index", new
+                {
+                    page,
+                    studentName = ViewBag.StudentName,
+                    examId = ViewBag.ExamId,
+                    result = ViewBag.Result
+                }),
+                                new PagedListRenderOptions
+                                {
+                                    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                    LiElementClasses = new[] { "page-item" },
+                                    PageClasses = new[] { "page-link" }
+                                })
+
+            </div>
+
+            <div class="col-md-4 text-end">
+
+                <span class="badge bg-primary">
+                    Page @Model.PageNumber of @Model.PageCount
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

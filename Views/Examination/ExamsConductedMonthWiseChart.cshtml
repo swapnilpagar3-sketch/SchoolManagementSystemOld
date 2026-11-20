@@ -1,0 +1,187 @@
+﻿@using Newtonsoft.Json
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Exams Conducted Month Wise";
+}
+
+<div class="card shadow border-0">
+
+    <div class="card-header bg-success text-white">
+
+        <h3 class="mb-0">
+            <i class="bi bi-bar-chart-fill me-2"></i>
+            Exams Conducted Month Wise
+        </h3>
+
+    </div>
+
+    <div class="mt-3 mb-3 ms-3">
+
+        <a asp-controller="Home"
+           asp-action="Dashboard"
+           class="btn btn-warning">
+
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+            Dashboard List
+
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="monthChart"
+                style="height:120px;">
+        </canvas>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const months =
+        @Html.Raw(
+            JsonConvert.SerializeObject(
+                    ViewBag.Months));
+
+    const totalExams =
+        @Html.Raw(
+                        JsonConvert.SerializeObject(
+                                ViewBag.TotalExams));
+
+    const valueLabelPlugin =
+    {
+        id: 'valueLabelPlugin',
+
+        afterDatasetsDraw(chart)
+        {
+            const { ctx } = chart;
+
+            chart.data.datasets.forEach((dataset, datasetIndex) =>
+            {
+                const meta =
+                    chart.getDatasetMeta(datasetIndex);
+
+                meta.data.forEach((bar, index) =>
+                {
+                    const value =
+                        dataset.data[index];
+
+                    ctx.save();
+
+                    ctx.font =
+                        'bold 12px Arial';
+
+                    ctx.fillStyle =
+                        '#000';
+
+                    ctx.textAlign =
+                        'center';
+
+                    ctx.fillText(
+                        value,
+                        bar.x,
+                        bar.y - 8
+                    );
+
+                    ctx.restore();
+                });
+            });
+        }
+    };
+
+    const ctx =
+        document.getElementById('monthChart')
+            .getContext('2d');
+
+    new Chart(ctx,
+    {
+        type: 'bar',
+
+        data:
+        {
+            labels: months,
+
+            datasets:
+            [
+                {
+                    label: 'Exams Conducted',
+
+                    data: totalExams,
+
+                    backgroundColor:
+                    [
+                        '#198754',
+                        '#0d6efd',
+                        '#ffc107',
+                        '#dc3545',
+                        '#20c997',
+                        '#6f42c1',
+                        '#fd7e14',
+                        '#6610f2',
+                        '#0dcaf0',
+                        '#198754',
+                        '#0d6efd',
+                        '#ffc107'
+                    ],
+
+                    borderWidth: 1
+                }
+            ]
+        },
+
+        options:
+        {
+            responsive: true,
+
+            plugins:
+            {
+                legend:
+                {
+                    display: false
+                },
+
+                title:
+                {
+                    display: true,
+                    text: 'Month Wise Exams Conducted'
+                }
+            },
+
+            scales:
+            {
+                y:
+                {
+                    beginAtZero: true,
+
+                    ticks:
+                    {
+                        stepSize: 1
+                    },
+
+                    title:
+                    {
+                        display: true,
+                        text: 'Number of Exams'
+                    }
+                },
+
+                x:
+                {
+                    title:
+                    {
+                        display: true,
+                        text: 'Month'
+                    }
+                }
+            }
+        },
+
+        plugins: [valueLabelPlugin]
+    });
+
+</script>

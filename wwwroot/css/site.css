@@ -1,0 +1,189 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    color: #0d6efd;
+}
+
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: 0.3s;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    border-radius: 6px !important;
+    margin: 0 2px;
+}
+
+.btn-sm {
+    margin-right: 3px;
+}
+/* Product Table */
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+}
+
+.card-footer {
+    border-radius: 0 0 12px 12px !important;
+}
+
+/* Action Buttons */
+
+.btn-sm {
+    margin-right: 4px;
+}
+
+/* Pagination */
+
+.pagination {
+    justify-content: center;
+    margin-bottom: 0;
+}
+
+    .pagination .page-item {
+        margin: 0 2px;
+    }
+
+    .pagination .page-link {
+        border-radius: 10px !important;
+        border: none;
+        padding: 8px 14px;
+        font-weight: 600;
+        color: #0d6efd;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+    .pagination .page-item.active .page-link {
+        background: linear-gradient(45deg, #0d6efd, #6610f2);
+        color: white;
+        border: none;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        color: #6c757d;
+    }
+
+/* Badges */
+
+.badge {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+/* Card Shadow */
+
+.card.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+.shimmer {
+    position: relative;
+    overflow: hidden;
+    background: #e9ecef;
+    border-radius: 5px;
+}
+
+    .shimmer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150px;
+        width: 150px;
+        height: 100%;
+        background: linear-gradient( 90deg, transparent, rgba(255,255,255,0.7), transparent );
+        animation: shimmer 1.2s infinite;
+    }
+
+.footer-custom {
+    background-color: #6c757d;
+    /*//background: linear-gradient(135deg, #0f172a, #1e293b);*/
+    color: #e5e7eb;
+    border-top: 4px solid #2563eb;
+    margin-top: 40px;
+}
+
+    .footer-custom a {
+        color: #e5e7eb;
+        transition: all .3s ease;
+    }
+
+        .footer-custom a:hover {
+            color: #fbbf24;
+            text-decoration: none;
+        }
+
+    .footer-custom i {
+        transition: transform .3s ease;
+    }
+
+    .footer-custom a:hover i {
+        transform: scale(1.2);
+    }
+
+@keyframes shimmer {
+    100% {
+        left: 100%;
+    }
+}

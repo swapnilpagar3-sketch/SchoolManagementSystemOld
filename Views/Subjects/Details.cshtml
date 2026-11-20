@@ -1,0 +1,62 @@
+﻿@model EntityFrameworkCore.Models.Subject
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Subject Details";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-info text-white">
+            <h3 class="mb-0">
+                <i class="bi bi-book-fill me-2"></i>
+                Subject Details
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">
+                    Subject ID
+                </div>
+                <div class="col-md-9">
+                    @Model.Id
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">
+                    Subject Name
+                </div>
+                <div class="col-md-9">
+                    @Model.SubjectName
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-footer">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                <i class="bi bi-pencil-square me-1"></i>
+                Edit
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>
+                Back To List
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

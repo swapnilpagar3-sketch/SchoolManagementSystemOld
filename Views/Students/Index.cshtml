@@ -1,0 +1,242 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+
+@model IPagedList<EntityFrameworkCore.Models.Student>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "List Of Students";
+
+    bool isLoading = ViewData["IsLoading"] as bool? ?? false;
+}
+
+<style>
+    .shimmer {
+        background: #e0e2e5 !important;
+        background-image: linear-gradient(to right, #e0e2e5 0%, #ccd0d5 20%, #e0e2e5 40%, #e0e2e5 100%) !important;
+        background-repeat: no-repeat !important;
+        background-size: 800px 100% !important;
+        animation: shimmer-animation 1.5s infinite linear forwards !important;
+    }
+
+    .shimmer-text {
+        height: 16px;
+        width: 100%;
+        min-width: 60px;
+        border-radius: 4px;
+    }
+
+    .shimmer-btn {
+        height: 31px;
+        width: 75px;
+        border-radius: 4px;
+        display: inline-block;
+        margin: 0 3px;
+    }
+
+    @@keyframes shimmer-animation {
+        0% {
+            background-position: -468px 0;
+        }
+
+        100% {
+            background-position: 468px 0;
+        }
+    }
+</style>
+
+<div class="card shadow border-0">
+
+    <div class="card-header bg-success text-white">
+        <div class="d-flex justify-content-between align-items-center">
+
+            <h3 class="mb-0">
+                <i class="bi bi-mortarboard-fill me-2"></i>
+                Student Management
+            </h3>
+
+            <span class="badge bg-light text-dark fs-6">
+                Total Records: @Model.TotalItemCount
+            </span>
+
+        </div>
+    </div>
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-end mb-3">
+
+            <a asp-action="Create"
+               class="btn btn-success me-2">
+                <i class="bi bi-plus-circle-fill me-1"></i>
+                Add Student
+            </a>
+
+            <a asp-action="ExportToExcel"
+               class="btn btn-info">
+                <i class="bi bi-file-earmark-excel-fill me-1"></i>
+                Export
+            </a>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-bordered align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Id</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Date Of Birth</th>
+                        <th>Mobile</th>
+                        <th>Admission Date</th>
+                        <th>Class</th>
+                        <th width="280" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (isLoading)
+                    {
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <tr>
+                                <td><div class="shimmer shimmer-text"></div></td>
+                                <td><div class="shimmer shimmer-text"></div></td>
+                                <td><div class="shimmer shimmer-text"></div></td>
+                                <td><div class="shimmer shimmer-text"></div></td>
+                                <td><div class="shimmer shimmer-text"></div></td>
+                                <td><div class="shimmer shimmer-text"></div></td>
+                                <td><div class="shimmer shimmer-text"></div></td>
+
+                                <td class="text-center">
+                                    <div class="shimmer shimmer-btn"></div>
+                                    <div class="shimmer shimmer-btn"></div>
+                                    <div class="shimmer shimmer-btn"></div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else if (Model.Any())
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td class="fw-bold text-center">
+                                    @item.Id
+                                </td>
+
+                                <td>
+                                    @item.StudentName
+                                </td>
+
+                                <td>
+                                    @item.Gender
+                                </td>
+
+                                <td>
+                                    @item.DateOfBirth.ToString("dd-MMM-yyyy")
+                                </td>
+
+                                <td>
+                                    @item.MobileNo
+                                </td>
+
+                                <td>
+                                    @item.AdmissionDate.ToString("dd-MMM-yyyy")
+                                </td>
+
+                                <td class="text-center">
+                                    @item.ClassId
+                                </td>
+
+                                <td class="text-center">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-info btn-sm">
+                                        <i class="bi bi-eye-fill"></i>
+                                        Details
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Edit
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash-fill"></i>
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8"
+                                class="text-center text-danger fw-bold">
+                                No Student Records Found
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="card-footer bg-light">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-4">
+                <span class="badge bg-secondary">
+                    Total Pages: @Model.PageCount
+                </span>
+            </div>
+
+            <div class="col-md-4 text-center">
+
+                @Html.PagedListPager(
+                Model,
+                page => Url.Action("Index", new { page }),
+                                new PagedListRenderOptions
+                                {
+                                    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                    LiElementClasses = new[] { "page-item" },
+                                    PageClasses = new[] { "page-link" }
+                                })
+
+            </div>
+
+            <div class="col-md-4 text-end">
+
+                <span class="badge bg-primary">
+                    Page @Model.PageNumber of @Model.PageCount
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

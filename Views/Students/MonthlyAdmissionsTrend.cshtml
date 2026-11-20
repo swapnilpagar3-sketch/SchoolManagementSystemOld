@@ -1,0 +1,197 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Monthly Admissions Trend";
+}
+
+<div class="card-header bg-success text-white">
+    <h3 class="mb-0">
+        <i class="bi bi-graph-up-arrow me-2"></i>
+        Monthly Admissions Trend
+    </h3>
+</div>
+
+<div class="mt-3 mb-3">
+
+    <a asp-controller="Home"
+       asp-action="Dashboard"
+       class="btn btn-warning">
+
+        <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+        Dashboard List
+
+    </a>
+
+</div>
+
+<!-- KPI Cards -->
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Admissions
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalAdmissions
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-danger text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Months
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalMonths
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Highest Admissions
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.HighestAdmission
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Average Admissions
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.AverageAdmission
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Line Chart -->
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <div style="height:500px;">
+            <canvas id="admissionChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        var labels =
+            @Html.Raw(ViewBag.MonthLabels);
+
+        var admissions =
+            @Html.Raw(ViewBag.AdmissionCounts);
+
+        var ctx =
+            document.getElementById('admissionChart');
+
+        new Chart(ctx,
+        {
+            type: 'line',
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    label: 'Student Admissions',
+
+                    data: admissions,
+
+                    fill: false,
+
+                    borderColor: '#87CEEB',
+
+                    backgroundColor: '#198754',
+
+                    borderWidth: 4,
+
+                    tension: 0.3,
+
+                    pointRadius: 6,
+
+                    pointHoverRadius: 8
+                }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: true,
+                        position: 'top'
+                    },
+
+                    title:
+                    {
+                        display: true,
+                        text: 'Monthly Student Admissions Trend'
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true,
+
+                        ticks:
+                        {
+                            precision: 0
+                        },
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Number Of Admissions'
+                        }
+                    },
+
+                    x:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

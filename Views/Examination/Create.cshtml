@@ -1,0 +1,66 @@
+﻿@model EntityFrameworkCore.Models.Exam
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h3>
+            <i class="bi bi-file-earmark-text-fill"></i>
+            Create Exam
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create">
+
+            <div class="mb-3">
+                <label asp-for="ExamName"></label>
+
+                <input asp-for="ExamName"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ExamDate"></label>
+
+                <input asp-for="ExamDate"
+                       type="date"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TotalMarks"></label>
+
+                <input asp-for="TotalMarks"
+                       class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PassingMarks"></label>
+
+                <input asp-for="PassingMarks"
+                       class="form-control" />
+
+                <span asp-validation-for="PassingMarks"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <button class="btn btn-success">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle me-1"></i>
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>

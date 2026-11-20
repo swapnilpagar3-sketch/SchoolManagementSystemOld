@@ -1,0 +1,177 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Teacher Salary Chart";
+}
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h3 class="mb-0">
+            <i class="bi bi-cash-stack me-2"></i>
+            Teacher Salary Distribution
+        </h3>
+
+    </div>
+
+    <div class="mt-3 mb-3" style="margin-left:10px">
+
+        <a asp-controller="Home"
+           asp-action="Dashboard"
+           class="btn btn-warning">
+
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+            Dashboard List
+
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="salaryChart" height="100"></canvas>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var chartData =
+            @Html.Raw(ViewBag.ChartData);
+
+        var labels =
+            chartData.map(x => x.TeacherName);
+
+        var salaries =
+            chartData.map(x => x.Salary);
+
+        var ctx =
+            document.getElementById('salaryChart');
+
+        new Chart(ctx,
+        {
+            type: 'bar',
+
+            plugins: [ChartDataLabels],
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    label: 'Salary',
+
+                    data: salaries,
+
+                    backgroundColor:
+                    [
+                        '#36A2EB',
+                        '#FF6384',
+                        '#4BC0C0',
+                        '#FFCE56',
+                        '#9966FF',
+                        '#2ECC71',
+                        '#E67E22',
+                        '#E74C3C',
+                        '#3498DB',
+                        '#9B59B6',
+                        '#1ABC9C',
+                        '#F39C12'
+                    ],
+
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true,
+
+                        ticks:
+                        {
+                            callback: function(value)
+                            {
+                                return '₹' +
+                                    Number(value)
+                                    .toLocaleString('en-IN');
+                            }
+                        },
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Salary'
+                        }
+                    },
+
+                    x:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: 'Teachers'
+                        }
+                    }
+                },
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    },
+
+                    datalabels:
+                    {
+                        anchor: 'end',
+                        align: 'top',
+
+                        color: '#000',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            return '₹' +
+                                Number(value)
+                                .toLocaleString('en-IN');
+                        }
+                    },
+
+                    tooltip:
+                    {
+                        callbacks:
+                        {
+                            label: function(context)
+                            {
+                                return 'Salary: ₹' +
+                                    Number(context.raw)
+                                    .toLocaleString('en-IN');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

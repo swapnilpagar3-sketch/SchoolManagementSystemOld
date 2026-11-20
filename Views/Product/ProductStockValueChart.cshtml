@@ -1,0 +1,233 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Product Stock Value Dashboard";
+}
+
+<div class="card-header bg-success text-white">
+
+    <h3 class="mb-0">
+        <i class="bi bi-bar-chart-fill me-2"></i>
+        Product Stock Value Distribution
+    </h3>
+
+</div>
+
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Total Products</h6>
+
+                <h2 class="fw-bold">
+                    @ViewBag.TotalProducts
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Total Stock Value</h6>
+
+                <h2 class="fw-bold">
+                    ₹@string.Format("{0:N0}", ViewBag.TotalStockValue)
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Highest Stock Value</h6>
+
+                <h2 class="fw-bold">
+                    ₹@string.Format("{0:N0}", ViewBag.MaxStockValue)
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-info text-white shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Average Stock Value</h6>
+
+                <h2 class="fw-bold">
+                    ₹@string.Format("{0:N0}", ViewBag.AverageStockValue)
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    
+
+    <div class="card-body">
+
+        <canvas id="stockValueChart"
+                height="100">
+        </canvas>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var chartData =
+            @Html.Raw(ViewBag.ChartData);
+
+        var labels =
+            chartData.map(x => x.ProductName);
+
+        var stockValues =
+            chartData.map(x => x.StockValue);
+
+        var ctx =
+            document.getElementById('stockValueChart');
+
+        new Chart(ctx,
+        {
+            type: 'bar',
+
+            plugins: [ChartDataLabels],
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    label: 'Stock Value',
+
+                    data: stockValues,
+
+                    backgroundColor:
+                    [
+                        '#36A2EB',
+                        '#FF6384',
+                        '#4BC0C0',
+                        '#FFCE56',
+                        '#9966FF',
+                        '#2ECC71',
+                        '#E67E22',
+                        '#E74C3C',
+                        '#3498DB',
+                        '#9B59B6',
+                        '#1ABC9C',
+                        '#F39C12',
+                        '#D35400',
+                        '#16A085',
+                        '#8E44AD'
+                    ],
+
+                    borderColor: '#ffffff',
+
+                    borderWidth: 1
+                }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true,
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Stock Value (₹)'
+                        },
+
+                        ticks:
+                        {
+                            callback: function(value)
+                            {
+                                return '₹' +
+                                    Number(value)
+                                    .toLocaleString('en-IN');
+                            }
+                        }
+                    },
+
+                    x:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: 'Products'
+                        }
+                    }
+                },
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    },
+
+                    datalabels:
+                    {
+                        anchor: 'end',
+
+                        align: 'top',
+
+                        color: '#000',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            return '₹' +
+                                Number(value)
+                                .toLocaleString('en-IN');
+                        }
+                    },
+
+                    tooltip:
+                    {
+                        callbacks:
+                        {
+                            label: function(context)
+                            {
+                                return 'Stock Value : ₹' +
+                                    Number(context.raw)
+                                    .toLocaleString('en-IN');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

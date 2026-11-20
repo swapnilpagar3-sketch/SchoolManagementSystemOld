@@ -1,0 +1,133 @@
+﻿@model EntityFrameworkCore.Models.Exam
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Edit Exam";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">
+                <i class="bi bi-pencil-square me-2"></i>
+                Edit Exam
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Id"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Id"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ExamName"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="ExamName"
+                               class="form-control"
+                               placeholder="Enter Exam Name" />
+
+                        <span asp-validation-for="ExamName"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ExamDate"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="ExamDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="ExamDate"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TotalMarks"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="TotalMarks"
+                               class="form-control"
+                               placeholder="Enter Total Marks" />
+
+                        <span asp-validation-for="TotalMarks"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="PassingMarks"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="PassingMarks"
+                               class="form-control"
+                               placeholder="Enter Passing Marks" />
+
+                        <span asp-validation-for="PassingMarks"
+                              class="text-danger">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+
+                    <button type="submit"
+                            class="btn btn-success">
+                        <i class="bi bi-check-circle-fill me-1"></i>
+                        Update
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle me-1"></i>
+                        Back To List
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

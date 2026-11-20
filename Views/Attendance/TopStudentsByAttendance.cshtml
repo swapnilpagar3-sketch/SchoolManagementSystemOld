@@ -1,0 +1,229 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Top 10 Students By Attendance";
+}
+
+<div class="card-header bg-success text-white">
+    <h3 class="mb-0">
+        <i class="bi bi-trophy-fill me-2"></i>
+        Top 10 Students By Attendance
+    </h3>
+</div>
+
+<div class="mt-3 mb-3">
+
+    <a asp-controller="Home"
+       asp-action="Dashboard"
+       class="btn btn-warning">
+
+        <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+        Dashboard List
+
+    </a>
+
+</div>
+
+<!-- KPI Cards -->
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Top Students
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalStudents
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Highest Attendance
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.HighestAttendance
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-danger text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Lowest Attendance
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.LowestAttendance
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Average Attendance
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.AverageAttendance
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Chart -->
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <canvas id="topStudentChart"
+                style="height:500px;">
+        </canvas>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var labels =
+            @Html.Raw(ViewBag.StudentLabels);
+
+        var attendanceCounts =
+            @Html.Raw(ViewBag.AttendanceCounts);
+
+        var ctx =
+            document.getElementById('topStudentChart');
+
+        new Chart(ctx,
+        {
+            type: 'bar',
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    label: 'Present Days',
+
+                    data: attendanceCounts,
+
+                    backgroundColor:
+                    [
+                        '#36A2EB',
+                        '#4BC0C0',
+                        '#9966FF',
+                        '#FF6384',
+                        '#FF9F40',
+                        '#2ECC71',
+                        '#F1C40F',
+                        '#9B59B6',
+                        '#3498DB',
+                        '#E74C3C'
+                    ],
+
+                    borderColor:
+                    [
+                        '#1E88E5',
+                        '#009688',
+                        '#673AB7',
+                        '#E91E63',
+                        '#FB8C00',
+                        '#27AE60',
+                        '#F39C12',
+                        '#8E44AD',
+                        '#2980B9',
+                        '#C0392B'
+                    ],
+
+                    borderWidth: 2
+                }]
+            },
+
+            plugins: [ChartDataLabels],
+
+            options:
+            {
+                responsive: true,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    },
+
+                    title:
+                    {
+                        display: true,
+                        text: 'Top 10 Students By Present Attendance'
+                    },
+
+                    datalabels:
+                    {
+                        anchor: 'end',
+
+                        align: 'top',
+
+                        color: '#000',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            return value;
+                        }
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true,
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Present Days'
+                        }
+                    },
+
+                    x:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: 'Student Name'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

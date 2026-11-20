@@ -1,0 +1,576 @@
+﻿@{
+    ViewData["Title"] = "Analytics Dashboard";
+}
+
+<div class="container-fluid">
+
+    <div class="card shadow mb-4">
+
+        <div class="card-header bg-info text-white">
+
+            <h3 class="mb-0">
+                <i class="bi bi-bar-chart-fill me-2"></i>
+                Analytics Dashboard
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <p class="text-muted mb-0">
+                View all available reports and analytics dashboards.
+            </p>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3 text-primary">
+        <i class="bi bi-mortarboard-fill me-2"></i>
+        Teacher Analytics
+    </h4>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Teacher"
+               asp-action="TeacherPieChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-primary">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-pie-chart-fill text-primary"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Teacher Reports
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Teacher"
+               asp-action="SkillBarChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-success">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-bar-chart-fill text-success"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Teacher Skill Chart
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Teacher"
+               asp-action="TeacherSalaryChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-warning">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-currency-rupee text-warning"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Teacher Salary Chart
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3 text-success">
+        <i class="bi bi-person-fill me-2"></i>
+        Student Analytics
+    </h4>
+
+    <div class="row mb-4">
+
+        <div class="col-md-6 mb-3">
+
+            <a asp-controller="Students"
+               asp-action="StudentsByGender"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-info">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-gender-ambiguous text-info"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Student Gender Report
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <a asp-controller="Students"
+               asp-action="MonthlyAdmissionsTrend"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-danger">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-graph-up-arrow text-danger"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Admission Trend
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3 text-danger">
+        <i class="bi bi-calendar-check-fill me-2"></i>
+        Attendance Analytics
+    </h4>
+
+    <div class="row mb-4">
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Attendance"
+               asp-action="PresentVsAbsent"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-success">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-pie-chart-fill text-success"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Attendance Summary
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Attendance"
+               asp-action="DailyAttendanceTrend"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-primary">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-bar-chart-fill text-primary"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Daily Attendance Trend
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Attendance"
+               asp-action="DailyPresentVsAbsent"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-warning">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-bar-chart-steps text-warning"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Attendance Comparison
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Attendance"
+               asp-action="TopStudentsByAttendance"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-danger">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-trophy-fill text-danger"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Attendance Leaders
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3 text-warning">
+        <i class="bi bi-journal-check me-2"></i>
+        Examination Analytics
+    </h4>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Examination"
+               asp-action="ExamWiseTotalMarksChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-primary">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-bar-chart-fill text-primary"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Exam Marks Overview
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Examination"
+               asp-action="TotalMarksVsPassingMarksChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-success">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-check2-square text-success"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Marks vs Passing Criteria
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Examination"
+               asp-action="ExamsConductedMonthWiseChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-warning">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-calendar3 text-warning"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Monthly Exam Schedule
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3 text-dark">
+        <i class="bi bi-award-fill me-2"></i>
+        Exam Result Analytics
+    </h4>
+
+    <div class="row mb-4">
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Marks"
+               asp-action="ExamWisePassFailChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-danger">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-pie-chart-fill text-danger"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Exam Wise Pass vs Fail
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Marks"
+               asp-action="PassPercentagePerExamChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-info">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-percent text-info"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Pass Percentage Per Exam
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Marks"
+               asp-action="AverageMarksVsTotalMarksChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-primary">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-calculator text-primary"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Examwise Avg Marks
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <a asp-controller="Marks"
+               asp-action="ExamWiseTopper"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-success">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-trophy-fill text-success"
+                           style="font-size:45px;">
+                        </i>
+
+                        <h6 class="mt-3">
+                            Examwise Topper
+                        </h6>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <h4 class="mb-3 text-secondary">
+        <i class="bi bi-cash-coin me-2"></i>
+        Fees Analytics
+    </h4>
+
+    <div class="row mb-4">
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Fees"
+               asp-action="DailyFeesCollectionChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-success">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-graph-up text-success"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Daily Fees Collection
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Fees"
+               asp-action="PaymentModeDistribution"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-warning">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-credit-card text-warning"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Payment Mode Analysis
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-3">
+
+            <a asp-controller="Fees"
+               asp-action="PaymentModeCollectionChart"
+               class="text-decoration-none">
+
+                <div class="card shadow h-100 border-info">
+
+                    <div class="card-body text-center">
+
+                        <i class="bi bi-wallet2 text-info"
+                           style="font-size:50px;">
+                        </i>
+
+                        <h5 class="mt-3">
+                            Payment Mode Collection
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,128 @@
+﻿@model EntityFrameworkCore.Models.StudentExamMarks
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Edit Student Marks";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0">
+                <i class="bi bi-pencil-square me-2"></i>
+                Edit Student Marks
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Edit" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Id"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="Id"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StudentId"
+                               class="form-label">
+                        </label>
+
+                        <select asp-for="StudentId"
+                                asp-items="ViewBag.StudentId"
+                                class="form-select">
+
+                            <option value="">
+                                -- Select Student --
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="StudentId"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ExamId"
+                               class="form-label">
+                        </label>
+
+                        <select asp-for="ExamId"
+                                asp-items="ViewBag.ExamId"
+                                class="form-select">
+
+                            <option value="">
+                                -- Select Exam --
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="ExamId"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ObtainedMarks"
+                               class="form-label">
+                        </label>
+
+                        <input asp-for="ObtainedMarks"
+                               class="form-control"
+                               placeholder="Enter Obtained Marks" />
+
+                        <span asp-validation-for="ObtainedMarks"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="mt-3">
+
+                    <button type="submit"
+                            class="btn btn-success">
+                        <i class="bi bi-check-circle-fill me-1"></i>
+                        Update
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle me-1"></i>
+                        Back To List
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

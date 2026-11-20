@@ -1,0 +1,1207 @@
+﻿@{
+    var username = Context.Request.Cookies["Username"];
+    var profileImage = Context.Request.Cookies["ProfileImage"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - School Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/EntityFrameworkCore.styles.css" asp-append-version="true" />
+
+    <!-- Toastr -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    @await RenderSectionAsync("Styles", required: false)
+
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+            margin: 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .main-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,.08);
+            background-color: #fff;
+        }
+
+        .footer-custom {
+            background-color: #ffffff;
+            border-top: 1px solid #dee2e6;
+            margin-top: auto;
+        }
+
+        .nav-link {
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            font-weight: 600;
+        }
+
+        .navbar .nav-link {
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+            .navbar .nav-link:hover {
+                background: rgba(255,255,255,0.15);
+                transform: translateY(-2px);
+            }
+
+        .dropdown-menu {
+            border-radius: 12px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f5f9;
+            padding-left: 20px;
+            transition: all 0.2s;
+        }
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -1px;
+                display: none;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a::after {
+                float: right;
+                margin-top: 8px;
+                /* content: "▶"; */
+                font-size: 10px;
+            }
+
+        .search-highlight {
+            background: yellow;
+            color: black;
+            padding: 1px;
+        }
+
+        .search-current {
+            background: orange;
+            color: black;
+            font-weight: bold;
+        }
+
+        @@media (max-width: 768px) {
+            .content-wrapper {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="sticky-top shadow">
+
+        <!-- Top Bar -->
+        <div class="bg-dark text-white py-1 px-3">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <small>
+                    <i class="bi bi-calendar-event me-1"></i>
+                    @DateTime.Now.ToString("dddd, dd MMM yyyy")
+                </small>
+
+                <small>
+                    <i class="bi bi-mortarboard-fill me-1"></i>
+                    Orchids The International School
+                </small>
+
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark shadow"
+             style="background:linear-gradient(135deg,#2563eb,#4f46e5);">
+
+            <div class="container-fluid">
+
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold d-flex align-items-center"
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    <div class="bg-white rounded-circle p-2 me-2">
+
+                        @* <i class="bi bi-mortarboard-fill text-primary fs-4"></i> *@
+                        <img src="~/images/school-logo.jpg" style="height: 60px;width: 70px;" />
+                    </div>
+
+                    <div>
+                        <div class="fw-bold">
+                            School System
+                        </div>
+
+                        <small style="font-size:11px;">
+                            Management Portal
+                        </small>
+                    </div>
+
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse"
+                     id="navbarContent">
+
+                    <!-- Left Menu -->
+                    <ul class="navbar-nav me-auto">
+
+                        <li class="nav-item">
+                            <a class="nav-link px-3 fw-semibold"
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                <i class="bi bi-house-door-fill me-1"></i>
+                                Home
+
+                            </a>
+                        </li>
+
+                        <!-- Masters -->
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle px-3 fw-semibold"
+                               href="#"
+                               data-bs-toggle="dropdown">
+
+                                <i class="bi bi-folder-check me-1"></i>
+                                Masters
+
+                               @*  <span class="badge bg-warning text-dark ms-1">
+                                    5
+                                </span> *@
+
+                            </a>
+
+                            <ul class="dropdown-menu shadow-lg border-0">
+
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        Master Records
+                                    </h6>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Teacher"
+                                       asp-action="Index">
+                                        <i class="bi bi-mortarboard-fill text-primary me-2"></i>
+                                        Teachers
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Students"
+                                       asp-action="Index">
+                                        <i class="bi bi-person-fill text-success me-2"></i>
+                                        Students
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Classes"
+                                       asp-action="Index">
+                                        <i class="bi bi-door-open-fill text-danger me-2"></i>
+                                        Classes
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Subjects"
+                                       asp-action="Index">
+                                        <i class="bi bi-book-fill text-warning me-2"></i>
+                                        Subjects
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Attendance"
+                                       asp-action="Index">
+                                        <i class="bi bi-calendar-check-fill text-info me-2"></i>
+                                        Attendance
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Examination"
+                                       asp-action="Index">
+                                        <i class="bi bi-journal-check text-info me-2"></i>
+                                        Examination
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Marks"
+                                       asp-action="Index">
+                                        <i class="bi bi-award-fill text-warning me-2"></i>
+                                        Exam Results
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Fees"
+                                       asp-action="Index">
+                                        <i class="bi bi-cash-stack text-success me-2"></i>
+                                        Fees 
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                        <!-- Dashboard -->
+                        @* <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle px-3 fw-semibold"
+                               href="#"
+                               data-bs-toggle="dropdown">
+
+                                <i class="bi bi-bar-chart-fill me-1"></i>
+                                Dashboard
+
+                            </a>
+
+                            <ul class="dropdown-menu shadow-lg border-0">
+
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        Teacher Analytics
+                                    </h6>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Teacher"
+                                       asp-action="TeacherPieChart">
+                                        Teacher Reports
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Teacher"
+                                       asp-action="SkillBarChart">
+                                        Teacher Skill Chart
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Teacher"
+                                       asp-action="TeacherSalaryChart">
+                                        Teacher Salary Chart
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        Student Analytics
+                                    </h6>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Students"
+                                       asp-action="StudentsByGender">
+                                        Student Gender Reports
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Students"
+                                       asp-action="MonthlyAdmissionsTrend">
+                                        Admission Trend
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <h6 class="dropdown-header">
+                                        Attendance Analytics
+                                    </h6>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Attendance"
+                                       asp-action="PresentVsAbsent">
+                                        Attendance Summary
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Attendance"
+                                       asp-action="DailyAttendanceTrend">
+                                        Daily Attendance Trend
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Attendance"
+                                       asp-action="DailyPresentVsAbsent">
+                                        Daily Attendance Comparison
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Attendance"
+                                       asp-action="TopStudentsByAttendance">
+                                        Attendance Leaders
+                                    </a>
+                                </li>
+
+                            </ul>
+
+                        </li> *@
+
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle px-3 fw-semibold"
+                               href="#"
+                               data-bs-toggle="dropdown">
+
+                                <i class="bi bi-bar-chart-fill me-1"></i>
+                                Dashboard
+
+                            </a>
+
+                            <ul class="dropdown-menu shadow-lg border-0" style="width: 222px;">
+
+                                <!-- Teacher Analytics -->
+                                <li class="dropdown-submenu">
+
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        <i class="bi bi-mortarboard-fill me-2"></i>
+                                        Teacher Analytics
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Teacher"
+                                               asp-action="TeacherPieChart">
+                                                Teacher Reports
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Teacher"
+                                               asp-action="SkillBarChart">
+                                                Teacher Skill Chart
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Teacher"
+                                               asp-action="TeacherSalaryChart">
+                                                Teacher Salary Chart
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <!-- Student Analytics -->
+                                <li class="dropdown-submenu">
+
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        <i class="bi bi-person-fill me-2"></i>
+                                        Student Analytics
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Students"
+                                               asp-action="StudentsByGender">
+                                                Student Gender Reports
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Students"
+                                               asp-action="MonthlyAdmissionsTrend">
+                                                Admission Trend
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <!-- Attendance Analytics -->
+                                <li class="dropdown-submenu">
+
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        <i class="bi bi-calendar-check-fill me-2"></i>
+                                        Attendance Analytics
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Attendance"
+                                               asp-action="PresentVsAbsent">
+                                                Attendance Summary
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Attendance"
+                                               asp-action="DailyAttendanceTrend">
+                                                Daily Attendance Trend
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Attendance"
+                                               asp-action="DailyPresentVsAbsent">
+                                                Daily Attendance Comparison
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Attendance"
+                                               asp-action="TopStudentsByAttendance">
+                                                Attendance Leaders
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <!-- Examination Analytics -->
+                                <li class="dropdown-submenu">
+
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        <i class="bi bi-journal-check me-2"></i>
+                                        Examination Analytics
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Examination"
+                                               asp-action="ExamWiseTotalMarksChart">
+                                                Exam Marks Overview
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Examination"
+                                               asp-action="TotalMarksVsPassingMarksChart">
+                                                Marks vs Passing Criteria
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Examination"
+                                               asp-action="ExamsConductedMonthWiseChart">
+                                                Monthly Exam Schedule
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <!-- Exam Result Analytics -->
+                                <li class="dropdown-submenu">
+
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        <i class="bi bi-award-fill me-2"></i>
+                                        Exam Result Analytics
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Marks"
+                                               asp-action="ExamWisePassFailChart">
+                                                Exam Wise Pass vs Fail
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Marks"
+                                               asp-action="PassPercentagePerExamChart">
+                                                Pass Percentage Per Exam
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Marks"
+                                               asp-action="AverageMarksVsTotalMarksChart">
+                                                Examwise Avg Marks
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Marks"
+                                               asp-action="ExamWiseTopper">
+                                                Examwise Topper
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                                <!-- Fees Analytics -->
+                                <li class="dropdown-submenu">
+
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        <i class="bi bi-cash-coin me-2"></i>
+                                        Fees Analytics
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Fees"
+                                               asp-action="DailyFeesCollectionChart">
+                                                Daily Fees Collection
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Fees"
+                                               asp-action="PaymentModeDistribution">
+                                                Payment Mode Analysis
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Fees"
+                                               asp-action="PaymentModeCollectionChart">
+                                                Payment Mode Collection
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+
+                            </ul>
+
+                        </li>
+
+                    </ul>
+
+                   @*  <form class="d-flex me-3" onsubmit="return searchCurrentPage();">
+
+                        <input id="pageSearch"
+                               class="form-control form-control-sm"
+                               type="search"
+                               placeholder="Search on current page..." />
+
+                    </form> *@
+
+                    <form class="d-flex me-3" onsubmit="return false;">
+                        <input id="pageSearch"
+                               class="form-control form-control-sm"
+                               type="search"
+                               placeholder="Search on current page..."
+                               autocomplete="off" />
+                    </form>
+
+                    <!-- Notification -->
+                    <a href="#"
+                       class="text-white me-3 position-relative">
+
+                        <i class="bi bi-bell-fill fs-5"></i>
+
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                        </span>
+
+                    </a>
+
+
+
+                    <!-- Profile -->
+                    <div class="dropdown">
+
+                        <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle bg-white bg-opacity-10 px-3 py-2 rounded-pill"
+                           href="#"
+                           data-bs-toggle="dropdown">
+
+                            @if (!string.IsNullOrEmpty(profileImage))
+                            {
+                                <img src="@profileImage"
+                                     width="36"
+                                     height="36"
+                                     class="rounded-circle me-2" />
+                            }
+                            else
+                            {
+                                <i class="bi bi-person-circle fs-4 me-2"></i>
+                            }
+
+                            <span>@username</span>
+
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+
+                            <li>
+                                <div class="px-3 py-2">
+                                    <small class="text-muted">
+                                        Logged in as
+                                    </small>
+                                    <div class="fw-bold">
+                                        @username
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item text-danger"
+                                   asp-controller="Login"
+                                   asp-action="Logout">
+
+                                    <i class="bi bi-box-arrow-right me-2"></i>
+                                    Logout
+
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+
+        <div class="container-fluid">
+
+            <main role="main">
+
+                <div class="card main-card">
+                    <div class="card-body">
+                        @RenderBody()
+                    </div>
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    @* <footer class="footer-custom">
+        <div class="container-fluid py-3 text-center text-muted">
+
+            <span>
+                &copy; @DateTime.Now.Year - Orchids The International School
+            </span>
+
+            &nbsp;|&nbsp;
+
+            <a asp-controller="Home"
+               asp-action="Privacy"
+               class="text-decoration-none">
+                Privacy Policy
+            </a>
+
+        </div>
+    </footer> *@
+
+    @* <footer class="footer-custom text-light mt-5"
+            style="background: linear-gradient(90deg,#f97316,#ea580c);"> *@
+
+    @* <footer class="footer-custom bg-secondary text-light mt-4"> *@
+    <footer class="footer-custom text-light mt-4"
+            style="background-color:#6c757d;">
+
+        <div class="container-fluid py-2">
+
+            <div class="row align-items-center g-2">
+
+                <!-- School Information -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <h6 class="fw-bold mb-1">
+                        <i class="bi bi-mortarboard-fill me-2"></i>
+                        Orchids The International School
+                    </h6>
+
+                    <div class="small">
+
+                        <p class="mb-0">
+                            <i class="bi bi-geo-alt-fill text-danger me-2"></i>
+                            India
+                        </p>
+
+                        <p class="mb-0">
+                            <i class="bi bi-telephone-fill text-success me-2"></i>
+                            +91 1800-889-9999
+                        </p>
+
+                        <p class="mb-0">
+                            <i class="bi bi-envelope-fill text-info me-2"></i>
+                            info@orchidsinternationalschool.com
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- Quick Links -->
+
+                <div class="col-lg-4 col-md-3">
+
+                    <h6 class="fw-bold mb-1">
+                        Quick Links
+                    </h6>
+
+                    <ul class="list-unstyled small mb-0">
+
+                        <li class="mb-0">
+                            <a asp-controller="Home"
+                               asp-action="Index"
+                               class="text-white text-decoration-none">
+                                <i class="bi bi-house-door-fill me-1"></i>
+                                Home
+                            </a>
+                        </li>
+
+                        <li class="mb-0">
+                            <a asp-controller="Home"
+                               asp-action="Dashboard"
+                               class="text-white text-decoration-none">
+                                <i class="bi bi-bar-chart-fill me-1"></i>
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li class="mb-0">
+                            <a asp-controller="Home"
+                               asp-action="Privacy"
+                               class="text-white text-decoration-none">
+                                <i class="bi bi-shield-lock-fill me-1"></i>
+                                Privacy
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <!-- Social Icons -->
+
+                <div class="col-lg-4 col-md-3 text-md-end text-center">
+
+                    <a href="https://www.facebook.com/ORCHIDSTheInternationalSchool/"
+                       target="_blank"
+                       class="text-white me-2"
+                       style="font-size:22px;">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a href="https://www.instagram.com/orchids_international_schools/"
+                       target="_blank"
+                       class="text-white me-2"
+                       style="font-size:22px;">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a href="https://x.com/Orchids_School"
+                       target="_blank"
+                       class="text-white me-2"
+                       style="font-size:22px;">
+                        <i class="bi bi-twitter-x"></i>
+                    </a>
+
+                    <a href="https://in.linkedin.com/company/orchids-the-international-school"
+                       target="_blank"
+                       class="text-white"
+                       style="font-size:22px;">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Site JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            timeOut: 4000,
+            extendedTimeOut: 1000,
+            preventDuplicates: true,
+            newestOnTop: true
+        };
+    </script>
+
+    @if (TempData["Success"] != null)
+    {
+        <script>
+            toastr.success('@TempData["Success"]');
+        </script>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <script>
+            toastr.error('@TempData["Error"]');
+        </script>
+    }
+
+    @if (TempData["Warning"] != null)
+    {
+        <script>
+            toastr.warning('@TempData["Warning"]');
+        </script>
+    }
+
+    @if (TempData["Info"] != null)
+    {
+        <script>
+            toastr.info('@TempData["Info"]');
+        </script>
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+   @*  <script>
+
+        function searchCurrentPage()
+        {
+            // Remove previous highlights
+            removeHighlights(document.body);
+
+            var text =
+                document.getElementById("pageSearch")
+                    .value
+                    .trim();
+
+            if(text === "")
+                return false;
+
+            var found =
+                highlightText(document.body, text.toLowerCase());
+
+            if(found)
+            {
+                found.scrollIntoView(
+                {
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+            else
+            {
+                alert("No matching text found on this page.");
+            }
+
+            return false;
+        }
+
+        function highlightText(node, searchText)
+        {
+            if(node.nodeType === 3)
+            {
+                var value = node.nodeValue;
+                var index = value.toLowerCase().indexOf(searchText);
+
+                if(index >= 0)
+                {
+                    var span = document.createElement("span");
+                    span.className = "search-highlight";
+
+                    var matched =
+                        value.substring(index, index + searchText.length);
+
+                    span.textContent = matched;
+
+                    var after =
+                        node.splitText(index);
+
+                    after.nodeValue =
+                        after.nodeValue.substring(searchText.length);
+
+                    node.parentNode.insertBefore(span, after);
+
+                    return span;
+                }
+            }
+
+            if(node.nodeType === 1 &&
+               node.childNodes &&
+               !/(script|style)/i.test(node.tagName))
+            {
+                for(var i=0;i<node.childNodes.length;i++)
+                {
+                    var result =
+                        highlightText(node.childNodes[i], searchText);
+
+                    if(result)
+                        return result;
+                }
+            }
+
+            return null;
+        }
+
+        function removeHighlights(element)
+        {
+            var highlights =
+                element.querySelectorAll(".search-highlight");
+
+            highlights.forEach(function(span)
+            {
+                span.replaceWith(
+                    document.createTextNode(span.textContent));
+            });
+
+            element.normalize();
+        }
+
+    </script> *@
+
+    <script>
+
+        let matches = [];
+        let currentIndex = -1;
+
+        function removeHighlights()
+        {
+            matches = [];
+            currentIndex = -1;
+
+            document.querySelectorAll("mark.search-highlight, mark.search-current")
+                .forEach(mark =>
+                {
+                    const text = document.createTextNode(mark.textContent);
+                    mark.parentNode.replaceChild(text, mark);
+                });
+
+            document.body.normalize();
+        }
+
+        function highlightWord(word)
+        {
+            removeHighlights();
+
+            if (!word)
+                return;
+
+            const regex = new RegExp(word, "gi");
+
+            function walk(node)
+            {
+                if (node.nodeType === 3)
+                {
+                    const value = node.nodeValue;
+
+                    if (regex.test(value))
+                    {
+                        const span = document.createElement("span");
+
+                        span.innerHTML = value.replace(regex,
+                            match => `<mark class="search-highlight">${match}</mark>`);
+
+                        node.parentNode.replaceChild(span, node);
+                    }
+                }
+                else if (
+                    node.nodeType === 1 &&
+                    node.childNodes &&
+                    !["SCRIPT","STYLE","INPUT","TEXTAREA"].includes(node.tagName))
+                {
+                    [...node.childNodes].forEach(walk);
+                }
+            }
+
+            walk(document.body);
+
+            matches = [...document.querySelectorAll(".search-highlight")];
+
+            if (matches.length > 0)
+            {
+                currentIndex = 0;
+                focusCurrent();
+            }
+        }
+
+        function focusCurrent()
+        {
+            matches.forEach(x =>
+                x.classList.remove("search-current"));
+
+            if (matches.length === 0)
+                return;
+
+            matches[currentIndex].classList.add("search-current");
+
+            matches[currentIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+        document.getElementById("pageSearch")
+        .addEventListener("keydown", function(e)
+        {
+            if (e.key !== "Enter")
+                return;
+
+            e.preventDefault();
+
+            const word = this.value.trim();
+
+            if (!word)
+            {
+                removeHighlights();
+                return;
+            }
+
+            if (matches.length === 0)
+            {
+                highlightWord(word);
+                return;
+            }
+
+            currentIndex++;
+
+            if (currentIndex >= matches.length)
+                currentIndex = 0;
+
+            focusCurrent();
+        });
+
+        document.getElementById("pageSearch")
+        .addEventListener("input", function()
+        {
+            removeHighlights();
+        });
+
+    </script>
+
+</body>
+</html>

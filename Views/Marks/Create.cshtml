@@ -1,0 +1,109 @@
+﻿@model EntityFrameworkCore.Models.StudentExamMarks
+
+@{
+    ViewData["Title"] = "Add Student Marks";
+}
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+
+        <h3>
+            <i class="bi bi-clipboard2-check-fill"></i>
+            Add Exam Result
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="StudentId"
+                       class="form-label">
+                </label>
+
+                <select asp-for="StudentId"
+                        asp-items="ViewBag.StudentId"
+                        class="form-control">
+
+                    <option value="">
+                        -- Select Student --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="StudentId"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="ExamId"
+                       class="form-label">
+                </label>
+
+                <select asp-for="ExamId"
+                        asp-items="ViewBag.ExamId"
+                        class="form-control">
+
+                    <option value="">
+                        -- Select Exam --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="ExamId"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label asp-for="ObtainedMarks"
+                       class="form-label">
+                </label>
+
+                <input asp-for="ObtainedMarks"
+                       class="form-control"
+                       placeholder="Enter Obtained Marks" />
+
+                <span asp-validation-for="ObtainedMarks"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success">
+                <i class="bi bi-check-circle-fill me-1"></i>
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                <i class="bi bi-arrow-left-circle me-1"></i>
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

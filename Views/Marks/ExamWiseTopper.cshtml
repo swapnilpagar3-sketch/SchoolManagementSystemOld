@@ -1,0 +1,108 @@
+﻿@model IEnumerable<EntityFrameworkCore.ViewModels.ExamTopperVM>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Exam Wise Topper";
+}
+
+<div class="card shadow border-0">
+
+    <div class="card-header bg-success text-white">
+
+        <h3 class="mb-0">
+
+            <i class="bi bi-trophy-fill me-2"></i>
+
+            Exam Wise Toppers
+
+        </h3>
+
+    </div>
+
+    <div class="mt-3 ms-3">
+
+        <a asp-controller="Home"
+           asp-action="Dashboard"
+           class="btn btn-warning">
+
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+
+            Dashboard List
+
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+
+                    <div class="card border-warning shadow h-100">
+
+                        <div class="card-header bg-info text-dark">
+
+                            <h5 class="mb-0">
+
+                                <i class="bi bi-journal-check me-2"></i>
+
+                                @item.ExamName
+
+                            </h5>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <h4 class="text-primary">
+
+                                <i class="bi bi-person-fill"></i>
+
+                                @item.StudentName
+
+                            </h4>
+
+                            <hr />
+
+                            <p>
+
+                                <strong>Marks :</strong>
+
+                                @item.ObtainedMarks /
+                                @item.TotalMarks
+
+                            </p>
+
+                            <p>
+
+                                <strong>Percentage :</strong>
+
+                                <span class="badge bg-success fs-6">
+
+                                    @item.Percentage %
+
+                                </span>
+
+                            </p>
+
+                            <h1 class="text-center text-warning">
+
+                                <i class="bi bi-trophy-fill"></i>
+
+                            </h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

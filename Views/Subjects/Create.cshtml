@@ -1,0 +1,65 @@
+﻿@model EntityFrameworkCore.Models.Subject
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Subject";
+}
+
+<style>
+    .input-validation-error {
+        border-color: #dc3545;
+    }
+</style>
+
+@* <h2>Create Subject</h2> *@
+
+<div class="card-header bg-success text-white">
+
+    <h3>
+        <i class="bi bi-book-fill"></i>
+        Create Subject
+    </h3>
+
+</div>
+
+<div asp-validation-summary="ModelOnly"
+     class="text-danger mb-3">
+</div>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+
+        <label asp-for="SubjectName"
+               class="form-label">
+        </label>
+
+        <input asp-for="SubjectName"
+               class="form-control"
+               placeholder="Enter Subject Name" />
+
+        <span asp-validation-for="SubjectName"
+              class="text-danger">
+        </span>
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-success">
+        <i class="bi bi-check-circle-fill me-1"></i>
+        Save
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle me-1"></i>
+        Cancel
+    </a>
+
+</form>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

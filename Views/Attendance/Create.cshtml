@@ -1,0 +1,74 @@
+﻿@model EntityFrameworkCore.Models.Attendance
+
+@{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-success text-white">
+        <h3>
+            <i class="bi bi-calendar-check-fill"></i>
+            Mark Attendance
+        </h3>
+    </div>
+
+    <div class="card-body">
+
+        <form asp-action="Create">
+
+            <div class="mb-3">
+                <label asp-for="StudentId"></label>
+
+                <select asp-for="StudentId"
+                        class="form-control"
+                        asp-items="ViewBag.StudentId">
+                    <option value="">
+                        Select Student
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AttendanceDate"></label>
+
+                <input asp-for="AttendanceDate"
+                       type="date"
+                       class="form-control" 
+                       max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+
+                <span asp-validation-for="AttendanceDate"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label>Status</label>
+
+                <select asp-for="Status"
+                        class="form-control">
+
+                    <option value="Present">
+                        Present
+                    </option>
+
+                    <option value="Absent">
+                        Absent
+                    </option>
+
+                </select>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success">
+                Save
+            </button>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </form>
+
+    </div>
+</div>

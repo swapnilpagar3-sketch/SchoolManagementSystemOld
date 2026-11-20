@@ -1,0 +1,238 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Product Quantity Distribution";
+}
+
+<div class="card-header bg-success text-white">
+
+    <h3 class="mb-0">
+        <i class="bi bi-pie-chart-fill me-2"></i>
+        Product Quantity Distribution
+    </h3>
+
+</div>
+
+<!-- KPI Cards -->
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Products
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalProducts
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-danger text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Quantity
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalQuantity
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Highest Quantity
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.MaxQuantity
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Minimum Quantity
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.MinQuantity
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Pie Chart Card -->
+<div class="card shadow">
+
+    @* <div class="card-header bg-success text-white">
+
+        <h3 class="mb-0">
+            <i class="bi bi-pie-chart-fill me-2"></i>
+            Product Quantity Distribution
+        </h3>
+
+    </div> *@
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-center">
+
+            <div style="width:500px; height:500px;">
+                <canvas id="productPieChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var productData =
+            @Html.Raw(ViewBag.ChartData);
+
+        var labels =
+            productData.map(x => x.ProductName);
+
+        var quantities =
+            productData.map(x => x.Quantity);
+
+        var total =
+            quantities.reduce((a, b) => a + b, 0);
+
+        var ctx =
+            document.getElementById('productPieChart');
+
+        new Chart(ctx,
+        {
+            type: 'pie',
+
+            plugins: [ChartDataLabels],
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    data: quantities,
+
+                    backgroundColor:
+                    [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0',
+                        '#9966FF',
+                        '#FF9F40',
+                        '#2ECC71',
+                        '#E74C3C',
+                        '#3498DB',
+                        '#9B59B6',
+                        '#1ABC9C',
+                        '#F39C12',
+                        '#D35400',
+                        '#7F8C8D',
+                        '#16A085',
+                        '#8E44AD',
+                        '#2980B9',
+                        '#27AE60',
+                        '#C0392B',
+                        '#34495E'
+                    ],
+
+                    borderColor: "#ffffff",
+                    borderWidth: 2
+                }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        position: 'bottom',
+
+                        labels:
+                        {
+                            boxWidth: 15,
+                            padding: 15,
+                            font:
+                            {
+                                size: 12
+                            }
+                        }
+                    },
+
+                    datalabels:
+                    {
+                        color: '#ffffff',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            var percentage =
+                                ((value / total) * 100)
+                                .toFixed(1);
+
+                            return percentage + '%';
+                        }
+                    },
+
+                    tooltip:
+                    {
+                        callbacks:
+                        {
+                            label: function(context)
+                            {
+                                var value =
+                                    context.raw;
+
+                                var percentage =
+                                    ((value / total) * 100)
+                                    .toFixed(2);
+
+                                return context.label +
+                                       ' : ' +
+                                       percentage +
+                                       '% (' +
+                                       value +
+                                       ' Quantity)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

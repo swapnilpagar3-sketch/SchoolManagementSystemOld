@@ -1,0 +1,75 @@
+﻿@* @model EntityFrameworkCore.ViewModels.NotificationVM
+
+<li class="nav-item dropdown">
+
+    <a class="nav-link text-white dropdown-toggle"
+       href="#"
+       role="button"
+       data-bs-toggle="dropdown">
+
+        <i class="bi bi-bell-fill fs-5"></i>
+
+        @if (Model.Count > 0)
+        {
+            <span class="badge bg-danger">
+                @Model.Count
+            </span>
+        }
+
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end"
+        style="width:350px;">
+
+        @if (Model.Notifications.Any())
+        {
+            @foreach (var item in Model.Notifications)
+            {
+                <li>
+
+                    <a class="dropdown-item"
+                       asp-controller="Notification"
+                       asp-action="MarkAsRead"
+                       asp-route-id="@item.Id">
+
+                        <strong>
+                            @item.Title
+                        </strong>
+
+                        <br />
+
+                        <small>
+                            @item.Message
+                        </small>
+
+                        <br />
+
+                        <small class="text-muted">
+                            @item.CreatedDate.ToString("dd-MMM-yyyy HH:mm")
+                        </small>
+
+                    </a>
+
+                </li>
+
+                <li>
+                    <hr class="dropdown-divider" />
+                </li>
+            }
+        }
+        else
+        {
+            <li>
+
+                <span class="dropdown-item text-center">
+
+                    No Notifications
+
+                </span>
+
+            </li>
+        }
+
+    </ul>
+
+</li> *@

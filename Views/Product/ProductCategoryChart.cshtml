@@ -1,0 +1,216 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Products Per Category";
+}
+
+<div class="card-header bg-success text-white">
+
+    <h3 class="mb-0">
+        <i class="bi bi-bar-chart-fill me-2"></i>
+        Products Per Category
+    </h3>
+
+</div>
+
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card bg-primary text-white shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Total Categories</h6>
+
+                <h2 class="fw-bold">
+                    @ViewBag.TotalCategories
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-danger text-white shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Total Products</h6>
+
+                <h2 class="fw-bold">
+                    @ViewBag.TotalProducts
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Highest Category Count</h6>
+
+                <h2 class="fw-bold">
+                    @ViewBag.MaxProductsInCategory
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-info text-white shadow border-0">
+            <div class="card-body text-center">
+
+                <h6>Average Products</h6>
+
+                <h2 class="fw-bold">
+                    @ViewBag.AverageProductsPerCategory
+                </h2>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <canvas id="categoryChart"
+                height="80">
+        </canvas>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var chartData =
+            @Html.Raw(ViewBag.ChartData);
+
+        var labels =
+            chartData.map(x => x.Category);
+
+        var counts =
+            chartData.map(x => x.ProductCount);
+
+        var ctx =
+            document.getElementById('categoryChart');
+
+        new Chart(ctx,
+        {
+            type: 'bar',
+
+            plugins: [ChartDataLabels],
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    label: 'Products',
+
+                    data: counts,
+
+                    backgroundColor:
+                    [
+                        '#36A2EB',
+                        '#FF6384',
+                        '#4BC0C0',
+                        '#FFCE56',
+                        '#9966FF',
+                        '#2ECC71',
+                        '#E67E22',
+                        '#E74C3C',
+                        '#3498DB',
+                        '#9B59B6'
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true,
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Number of Products'
+                        },
+
+                        ticks:
+                        {
+                            precision: 0
+                        }
+                    },
+
+                    x:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: 'Category'
+                        }
+                    }
+                },
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: false
+                    },
+
+                    datalabels:
+                    {
+                        anchor: 'end',
+
+                        align: 'top',
+
+                        color: '#000',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            return value;
+                        }
+                    },
+
+                    tooltip:
+                    {
+                        callbacks:
+                        {
+                            label: function(context)
+                            {
+                                return 'Products : ' +
+                                       context.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

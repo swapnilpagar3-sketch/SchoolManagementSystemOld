@@ -1,0 +1,251 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Daily Present vs Absent";
+}
+
+<div class="card-header bg-success text-white">
+    <h3 class="mb-0">
+        <i class="bi bi-bar-chart-stack-fill me-2"></i>
+        Daily Attendance Comparison
+    </h3>
+</div>
+
+<div class="mt-3 mb-3">
+
+    <a asp-controller="Home"
+       asp-action="Dashboard"
+       class="btn btn-warning">
+
+        <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+        Dashboard List
+
+    </a>
+
+</div>
+
+<!-- KPI Cards -->
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Present
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalPresent
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-danger text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Absent
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalAbsent
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Days
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalDays
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Avg Present / Day
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.AveragePresent
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Stacked Bar Chart -->
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <canvas id="attendanceStackedChart"
+                style="height:500px;">
+        </canvas>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var labels =
+            @Html.Raw(ViewBag.DateLabels);
+
+        var presentCounts =
+            @Html.Raw(ViewBag.PresentCounts);
+
+        var absentCounts =
+            @Html.Raw(ViewBag.AbsentCounts);
+
+        var ctx =
+            document.getElementById('attendanceStackedChart');
+
+        new Chart(ctx,
+        {
+            type: 'bar',
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [
+                    {
+                        label: 'Present',
+
+                        data: presentCounts,
+
+                        backgroundColor:
+                            'rgba(54, 162, 235, 0.85)',
+
+                        borderColor:
+                            '#36A2EB',
+
+                        borderWidth: 2
+                    },
+
+                    {
+                        label: 'Absent',
+
+                        data: absentCounts,
+
+                        backgroundColor:
+                            'rgba(255, 99, 132, 0.85)',
+
+                        borderColor:
+                            '#FF6384',
+
+                        borderWidth: 2
+                    }
+                ]
+            },
+
+            plugins: [ChartDataLabels],
+
+            options:
+            {
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        position: 'top'
+                    },
+
+                    title:
+                    {
+                        display: true,
+                        text: 'Daily Present vs Absent Attendance'
+                    },
+
+                    datalabels:
+                    {
+                        color: '#ffffff',
+
+                        anchor: 'center',
+
+                        align: 'center',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            return value;
+                        }
+                    },
+
+                    tooltip:
+                    {
+                        callbacks:
+                        {
+                            label: function(context)
+                            {
+                                return context.dataset.label +
+                                       ' : ' +
+                                       context.raw +
+                                       ' Students';
+                            }
+                        }
+                    }
+                },
+
+                scales:
+                {
+                    x:
+                    {
+                        stacked: true,
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Attendance Date'
+                        }
+                    },
+
+                    y:
+                    {
+                        stacked: true,
+
+                        beginAtZero: true,
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Student Count'
+                        },
+
+                        ticks:
+                        {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}

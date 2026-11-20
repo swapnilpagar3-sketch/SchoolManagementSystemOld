@@ -1,0 +1,213 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Daily Attendance Trend";
+}
+
+<div class="card-header bg-success text-white">
+    <h3 class="mb-0">
+        <i class="bi bi-bar-chart-fill me-2"></i>
+        Daily Attendance Trend
+    </h3>
+</div>
+
+<div class="mt-3 mb-3">
+
+    <a asp-controller="Home"
+       asp-action="Dashboard"
+       class="btn btn-warning">
+
+        <i class="bi bi-grid-3x3-gap-fill me-1"></i>
+        Dashboard List
+
+    </a>
+
+</div>
+
+<!-- KPI Cards -->
+<div class="row mb-4" style="margin-top:10px">
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Attendance
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalAttendance
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-danger text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Total Days
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.TotalDays
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Highest Attendance
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.HighestAttendance
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body text-center">
+                <h6 class="text-uppercase mb-2">
+                    Average Attendance
+                </h6>
+
+                <h2 class="fw-bold mb-0">
+                    @ViewBag.AverageAttendance
+                </h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Chart -->
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <canvas id="attendanceBarChart"
+                style="height:450px;">
+        </canvas>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+    <script>
+
+        var labels =
+            @Html.Raw(ViewBag.DateLabels);
+
+        var attendanceCounts =
+            @Html.Raw(ViewBag.AttendanceCounts);
+
+        var ctx =
+            document.getElementById('attendanceBarChart');
+
+        new Chart(ctx,
+        {
+            type: 'bar',
+
+            plugins: [ChartDataLabels],
+
+            data:
+            {
+                labels: labels,
+
+                datasets:
+                [{
+                    label: 'Students Present',
+
+                    data: attendanceCounts,
+
+                    backgroundColor:
+                        'rgba(54, 162, 235, 0.7)',
+
+                    borderColor:
+                        '#87CEFA',
+
+                    borderWidth: 2
+                }]
+            },
+
+            options:
+            {
+                responsive: true,
+
+                plugins:
+                {
+                    legend:
+                    {
+                        display: true,
+                        position: 'top'
+                    },
+
+                    title:
+                    {
+                        display: true,
+                        text: 'Daily Attendance Trend'
+                    },
+
+                    datalabels:
+                    {
+                        anchor: 'end',
+
+                        align: 'top',
+
+                        color: '#000',
+
+                        font:
+                        {
+                            weight: 'bold',
+                            size: 12
+                        },
+
+                        formatter: function(value)
+                        {
+                            return value;
+                        }
+                    }
+                },
+
+                scales:
+                {
+                    y:
+                    {
+                        beginAtZero: true,
+
+                        ticks:
+                        {
+                            stepSize: 5
+                        },
+
+                        title:
+                        {
+                            display: true,
+                            text: 'Present Student Count'
+                        }
+                    },
+
+                    x:
+                    {
+                        title:
+                        {
+                            display: true,
+                            text: 'Attendance Date'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+}
